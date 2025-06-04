@@ -1,0 +1,11 @@
+[DEFAULT]
+# E*TRADE API Credentials
+CONSUMER_KEY = your_consumer_key_here
+CONSUMER_SECRET = your_consumer_secret_here
+
+# API URLs
+SANDBOX_BASE_URL = https://apisb.etrade.com
+PROD_BASE_URL = https://api.etrade.com
+
+# Trading Settings
+USE_SANDBOX = true  # Set to false for live trading 

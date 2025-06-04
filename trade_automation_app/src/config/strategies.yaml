@@ -1,0 +1,118 @@
+# Trading Strategy Configuration
+
+# Covered Calls Strategy
+covered_calls:
+  name: "Covered Calls"
+  description: "Sell covered calls on owned stocks"
+  
+  # Stock Selection Criteria
+  stock_criteria:
+    min_market_cap: 1000000000  # $1B minimum market cap
+    min_volume: 1000000         # 1M minimum daily volume
+    min_price: 10.0            # Minimum stock price
+    max_price: 200.0           # Maximum stock price
+    min_iv_rank: 20            # Minimum implied volatility rank
+    max_iv_rank: 80            # Maximum implied volatility rank
+    
+  # Option Selection Criteria
+  option_criteria:
+    min_delta: 0.2
+    max_delta: 0.4
+    min_days_to_expiry: 14
+    max_days_to_expiry: 45
+    min_premium: 0.50          # Minimum premium per contract
+    min_roi: 0.01              # Minimum return on investment (1%)
+    
+  # Position Management
+  position_management:
+    max_position_size: 100000   # Maximum position size in USD
+    max_positions_per_stock: 1  # Maximum number of positions per stock
+    max_positions_total: 10     # Maximum total number of positions
+    roll_threshold: 0.7         # Roll position when 70% of premium is earned
+    stop_loss: 0.5              # Close position if 50% of premium is lost
+
+# Cash Secured Puts Strategy
+cash_secured_puts:
+  name: "Cash Secured Puts"
+  description: "Sell cash secured puts on selected stocks"
+  
+  # Stock Selection Criteria
+  stock_criteria:
+    min_market_cap: 2000000000  # $2B minimum market cap
+    min_volume: 2000000         # 2M minimum daily volume
+    min_price: 15.0            # Minimum stock price
+    max_price: 150.0           # Maximum stock price
+    min_iv_rank: 30            # Minimum implied volatility rank
+    max_iv_rank: 70            # Maximum implied volatility rank
+    
+  # Option Selection Criteria
+  option_criteria:
+    min_delta: 0.2
+    max_delta: 0.4
+    min_days_to_expiry: 21
+    max_days_to_expiry: 45
+    min_premium: 0.75          # Minimum premium per contract
+    min_roi: 0.015             # Minimum return on investment (1.5%)
+    
+  # Position Management
+  position_management:
+    max_position_size: 50000    # Maximum position size in USD
+    max_positions_per_stock: 1  # Maximum number of positions per stock
+    max_positions_total: 5      # Maximum total number of positions
+    roll_threshold: 0.7         # Roll position when 70% of premium is earned
+    stop_loss: 0.5              # Close position if 50% of premium is lost
+
+# Common Strategy Parameters
+common:
+  # Technical Analysis
+  technical_indicators:
+    rsi:
+      period: 14
+      overbought: 70
+      oversold: 30
+    macd:
+      fast_period: 12
+      slow_period: 26
+      signal_period: 9
+    moving_averages:
+      - period: 20
+        type: "SMA"
+      - period: 50
+        type: "EMA"
+      - period: 200
+        type: "SMA"
+        
+  # Market Conditions
+  market_conditions:
+    vix_threshold: 35          # Maximum VIX level for trading
+    min_market_trend: 0.02     # Minimum market trend (2% above 200-day MA)
+    max_correlation: 0.7       # Maximum correlation with market
+    
+  # Risk Management
+  risk_management:
+    max_drawdown: 0.1          # Maximum drawdown (10%)
+    max_leverage: 1.0          # Maximum leverage
+    min_cash_reserve: 0.2      # Minimum cash reserve (20% of portfolio)
+    max_sector_exposure: 0.25  # Maximum exposure to any single sector
+    
+  # Earnings Management
+  earnings:
+    enabled: true              # Whether to avoid trading during earnings
+    days_before_earnings: 5    # Days before earnings to avoid trading
+    days_after_earnings: 2     # Days after earnings to avoid trading
+    cache_duration: 24         # Hours to cache earnings dates
+    
+  # Sentiment Analysis
+  sentiment:
+    enabled: true              # Whether to use sentiment for parameter adjustment
+    cache_duration: 4          # Hours to cache sentiment scores
+    adjustments:
+      delta:
+        max_adjustment: 0.2    # Maximum delta adjustment (±20%)
+        sentiment_threshold: 0.5  # Sentiment threshold for adjustment
+      days_to_expiry:
+        max_adjustment: 0.3    # Maximum days adjustment (±30%)
+        sentiment_threshold: 0.5  # Sentiment threshold for adjustment
+      premium:
+        max_adjustment: 0.15   # Maximum premium adjustment (±15%)
+        sentiment_threshold: 0.5  # Sentiment threshold for adjustment 

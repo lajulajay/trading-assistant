@@ -1,0 +1,56 @@
+# E*TRADE Account Configuration Template
+# Copy this file to accounts.yaml and fill in your credentials
+
+# API Credentials
+api:
+  consumer_key: "YOUR_CONSUMER_KEY"
+  consumer_secret: "YOUR_CONSUMER_SECRET"
+  sandbox: true  # Set to false for production
+
+# Account Configurations
+accounts:
+  - id: "account1"
+    account_number: "YOUR_ACCOUNT_NUMBER"
+    description: "Primary Trading Account"
+    trading_enabled: true
+    max_position_size: 100000  # Maximum position size in USD
+    max_risk_per_trade: 0.02   # Maximum risk per trade (2% of account)
+    strategies:
+      - covered_calls
+      - cash_secured_puts
+
+  - id: "account2"
+    account_number: "YOUR_ACCOUNT_NUMBER"
+    description: "Secondary Trading Account"
+    trading_enabled: true
+    max_position_size: 50000
+    max_risk_per_trade: 0.015
+    strategies:
+      - covered_calls
+
+  - id: "account3"
+    account_number: "YOUR_ACCOUNT_NUMBER"
+    description: "Tertiary Trading Account"
+    trading_enabled: true
+    max_position_size: 75000
+    max_risk_per_trade: 0.025
+    strategies:
+      - cash_secured_puts
+
+# Global Trading Parameters
+trading:
+  max_daily_trades: 10
+  min_balance_required: 10000
+  trading_hours:
+    start: "09:30"  # Market open
+    end: "16:00"    # Market close
+  timezone: "America/New_York"
+
+# Risk Management
+risk_management:
+  max_portfolio_risk: 0.15  # Maximum total portfolio risk
+  max_sector_exposure: 0.25 # Maximum exposure to any single sector
+  min_delta: 0.2           # Minimum option delta
+  max_delta: 0.4           # Maximum option delta
+  min_days_to_expiry: 14   # Minimum days until option expiration
+  max_days_to_expiry: 45   # Maximum days until option expiration 
