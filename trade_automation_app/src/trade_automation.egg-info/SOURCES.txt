@@ -1,0 +1,11 @@
+pyproject.toml
+setup.py
+src/trade_automation/__init__.py
+src/trade_automation/main.py
+src/trade_automation/wrapper.py
+src/trade_automation.egg-info/PKG-INFO
+src/trade_automation.egg-info/SOURCES.txt
+src/trade_automation.egg-info/dependency_links.txt
+src/trade_automation.egg-info/entry_points.txt
+src/trade_automation.egg-info/requires.txt
+src/trade_automation.egg-info/top_level.txt

@@ -1,0 +1,2 @@
+etrade_client@ file:///Users/lajulajay/Developer/Etrade/etrade_client
+python-dotenv>=1.0.0
