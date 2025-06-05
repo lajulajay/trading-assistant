@@ -1,0 +1,16 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.ini
+
+# Node
+node_modules/
+build/
+dist/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
