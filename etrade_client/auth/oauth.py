@@ -8,29 +8,26 @@ class ETradeAuth:
     def __init__(self, config_path=None):
         """
         Initialize E*TRADE authentication.
-        
-        Args:
-            config_path (str, optional): Path to config.ini. If None, looks in current directory.
         """
-        self.config = configparser.ConfigParser()
-        if config_path:
-            self.config.read(config_path)
-        else:
-            self.config.read('config.ini')
-        
-        # Load environment variables as fallback
+        # Load environment variables first
         load_dotenv()
-        
-        # Get credentials from config or environment
-        self.consumer_key = self.config.get('DEFAULT', 'CONSUMER_KEY', fallback=os.getenv('ETRADE_CONSUMER_KEY'))
-        self.consumer_secret = self.config.get('DEFAULT', 'CONSUMER_SECRET', fallback=os.getenv('ETRADE_CONSUMER_SECRET'))
-        self.sandbox_url = self.config.get('DEFAULT', 'SANDBOX_BASE_URL', fallback='https://apisb.etrade.com')
-        self.prod_url = self.config.get('DEFAULT', 'PROD_BASE_URL', fallback='https://api.etrade.com')
+        # Initialize config parser as fallback (for legacy support, can be removed if not needed)
+        self.config = configparser.ConfigParser()
+        # Get credentials from environment first, then fallback to config
+        self.consumer_key = os.getenv('ETRADE_CONSUMER_KEY') or self.config.get('DEFAULT', 'CONSUMER_KEY', fallback=None)
+        self.consumer_secret = os.getenv('ETRADE_CONSUMER_SECRET') or self.config.get('DEFAULT', 'CONSUMER_SECRET', fallback=None)
+        self.sandbox_url = os.getenv('ETRADE_SANDBOX_URL', 'https://apisb.etrade.com')
+        self.prod_url = os.getenv('ETRADE_PROD_URL', 'https://api.etrade.com')
+        self.use_sandbox = os.getenv('ETRADE_USE_SANDBOX', 'true').lower() == 'true'
 
-    def get_oauth_service(self, use_sandbox=True):
+        if not self.consumer_key or not self.consumer_secret:
+            raise ValueError("E*TRADE API credentials not found. Please set ETRADE_CONSUMER_KEY and ETRADE_CONSUMER_SECRET environment variables.")
+
+    def get_oauth_service(self, use_sandbox=None):
         """Get OAuth1Service instance for E*TRADE API."""
+        if use_sandbox is None:
+            use_sandbox = self.use_sandbox
         base_url = self.sandbox_url if use_sandbox else self.prod_url
-        
         return OAuth1Service(
             name="etrade",
             consumer_key=self.consumer_key,

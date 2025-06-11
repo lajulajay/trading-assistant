@@ -1,5 +1,5 @@
 """E*TRADE Trade Automation App."""
-from etrade_client.auth.oauth import ETradeAuth
+from auth.oauth import ETradeAuth
 
 class TradeAutomation:
     def __init__(self, use_sandbox=True):

@@ -3,17 +3,17 @@ from __future__ import print_function
 import webbrowser
 import json
 import logging
-import configparser
+import os
 import sys
 import requests
 from rauth import OAuth1Service
 from logging.handlers import RotatingFileHandler
+from dotenv import load_dotenv
 from .accounts.accounts import Accounts
 from .market.market import Market
 
-# loading configuration file
-config = configparser.ConfigParser()
-config.read('config.ini')
+# Load environment variables
+load_dotenv()
 
 # logger settings
 logger = logging.getLogger('my_logger')
@@ -27,10 +27,18 @@ logger.addHandler(handler)
 
 def oauth():
     """Allows user authorization for the sample application with OAuth 1"""
+    consumer_key = os.getenv('ETRADE_CONSUMER_KEY')
+    consumer_secret = os.getenv('ETRADE_CONSUMER_SECRET')
+    sandbox_url = os.getenv('ETRADE_SANDBOX_URL', 'https://apisb.etrade.com')
+    prod_url = os.getenv('ETRADE_PROD_URL', 'https://api.etrade.com')
+
+    if not consumer_key or not consumer_secret:
+        raise ValueError("E*TRADE API credentials not found. Please set ETRADE_CONSUMER_KEY and ETRADE_CONSUMER_SECRET environment variables.")
+
     etrade = OAuth1Service(
         name="etrade",
-        consumer_key=config["DEFAULT"]["CONSUMER_KEY"],
-        consumer_secret=config["DEFAULT"]["CONSUMER_SECRET"],
+        consumer_key=consumer_key,
+        consumer_secret=consumer_secret,
         request_token_url="https://api.etrade.com/oauth/request_token",
         access_token_url="https://api.etrade.com/oauth/access_token",
         authorize_url="https://us.etrade.com/e/t/etws/authorize?key={}&token={}",
@@ -46,10 +54,10 @@ def oauth():
             print(entry + ")\t" + menu_items[entry])
         selection = input("Please select Consumer Key Type: ")
         if selection == "1":
-            base_url = config["DEFAULT"]["SANDBOX_BASE_URL"]
+            base_url = sandbox_url
             break
         elif selection == "2":
-            base_url = config["DEFAULT"]["PROD_BASE_URL"]
+            base_url = prod_url
             break
         elif selection == "3":
             break

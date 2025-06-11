@@ -1,12 +1,12 @@
 import json
 import logging
-import configparser
+import os
 from logging.handlers import RotatingFileHandler
+from dotenv import load_dotenv
 from ..order.order import Order
 
-# loading configuration file
-config = configparser.ConfigParser()
-config.read('config.ini')
+# Load environment variables
+load_dotenv()
 
 # logger settings
 logger = logging.getLogger('my_logger')
@@ -28,6 +28,9 @@ class Accounts:
         self.session = session
         self.account = {}
         self.base_url = base_url
+        self.consumer_key = os.getenv('ETRADE_CONSUMER_KEY')
+        if not self.consumer_key:
+            raise ValueError("ETRADE_CONSUMER_KEY environment variable not set")
 
     def account_list(self):
         """
@@ -183,7 +186,7 @@ class Accounts:
 
         # Add parameters and header information
         params = {"instType": self.account["institutionType"], "realTimeNAV": "true"}
-        headers = {"consumerkey": config["DEFAULT"]["CONSUMER_KEY"]}
+        headers = {"consumerkey": self.consumer_key}
 
         # Make API call for GET request
         response = self.session.get(url, header_auth=True, params=params, headers=headers)

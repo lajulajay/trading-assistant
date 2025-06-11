@@ -23,7 +23,7 @@ Etrade/
 │   └── setup.py          # Package setup
 │
 ├── config/                # Shared configuration
-│   └── settings.ini      # API credentials and settings
+│   └── settings.ini      # (Deprecated, use .env instead)
 │
 ├── requirements.txt       # Shared dependencies
 └── README.md             # This file
@@ -50,8 +50,8 @@ pip install -e .
 ```
 
 4. Configure your credentials:
-   - Copy `config/settings.ini.example` to `config/settings.ini`
-   - Add your E*TRADE API credentials to `config/settings.ini`
+   - Copy `.env.example` to `.env` in the project root
+   - Add your E*TRADE API credentials to `.env`
 
 ## Usage
 
